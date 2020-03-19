@@ -7,6 +7,10 @@ const Dialler = ({ number, setNumber }) => {
     setNumber(event.target.value);
   };
 
+  const handleBackSpace = () => {
+    setNumber(number.substring(0, number.length - 1));
+  };
+
   const handleNumberPressed = newNumber => {
     return () => {
       setNumber(`${number}${newNumber}`);
@@ -55,6 +59,11 @@ const Dialler = ({ number, setNumber }) => {
         <li>
           <KeypadButton handleClick={handleNumberPressed("0")}>0</KeypadButton>
         </li>
+        {number.length > 0 && (
+          <li>
+            <KeypadButton handleClick={handleBackSpace}>&lt;&lt;</KeypadButton>
+          </li>
+        )}
       </ol>
     </>
   );

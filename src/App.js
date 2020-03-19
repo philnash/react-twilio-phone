@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import Phone from './Phone'
+import React, { useState } from "react";
+import "./App.css";
+import Phone from "./Phone";
 
 const App = () => {
   const [token, setToken] = useState(null);
+  const [clicked, setClicked] = useState(false);
   const identity = "phil";
 
-  useEffect(() => {
+  const handleClick = () => {
+    setClicked(true);
     fetch(`/voice/token?identity=${encodeURIComponent(identity)}`)
       .then(response => response.json())
-      .then(({token}) => setToken(token));
-  }, [])
+      .then(({ token }) => setToken(token));
+  };
 
   return (
     <div className="App">
@@ -18,13 +20,17 @@ const App = () => {
         <h1>React &amp; Twilio Phone</h1>
       </header>
 
+      {!clicked && <button onClick={handleClick}>Connect to Phone</button>}
+
       {token ? <Phone token={token}></Phone> : <p>Loading...</p>}
 
       <footer>
-        <p>Built on Twitch by <a href="https://twitch.tv/phil_nash">phil_nash</a></p>
+        <p>
+          Built on Twitch by <a href="https://twitch.tv/phil_nash">phil_nash</a>
+        </p>
       </footer>
     </div>
   );
-}
+};
 
 export default App;

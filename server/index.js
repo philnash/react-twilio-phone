@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const pino = require("express-pino-logger")();
 const { chatToken, videoToken, voiceToken } = require("./tokens");
+const { VoiceResponse } = require("twilio").twiml;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -60,6 +61,15 @@ app.post("/voice/token", (req, res) => {
   const identity = req.body.identity;
   const token = voiceToken(identity, config);
   sendTokenResponse(token, res);
+});
+
+app.post("/voice", (req, res) => {
+  const To = req.body.To;
+  const response = new VoiceResponse();
+  const dial = response.dial({ callerId: config.twilio.callerId });
+  dial.number(To);
+  res.set("Content-Type", "text/xml");
+  res.send(response.toString());
 });
 
 app.listen(3001, () =>

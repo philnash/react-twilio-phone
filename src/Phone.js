@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Device } from "twilio-client";
+import Dialler from "./Dialler";
 
 const Phone = ({ token }) => {
-  const [ready, setReady] = useState(false);
+  const [status, setStatus] = useState("Connecting");
+  const [number, setNumber] = useState("");
   const deviceRef = useRef(null);
 
   useEffect(() => {
@@ -12,17 +14,27 @@ const Phone = ({ token }) => {
     device.setup(token, { debug: true });
 
     device.on("ready", () => {
-      setReady(true);
+      setStatus("Ready");
     });
 
     return () => {
       device.destroy();
       deviceRef.current = null;
-      setReady(false);
+      setStatus("Offline");
     };
   }, [token]);
 
-  return <p>This is the phone! {ready ? "Ready!" : "Connecting"}</p>;
+  const handleCall = () => {
+    deviceRef.current.connect({ To: number });
+  };
+
+  return (
+    <div>
+      <Dialler number={number} setNumber={setNumber}></Dialler>
+      <button onClick={handleCall}>Call</button>
+      <p className="status">{status}</p>
+    </div>
+  );
 };
 
 export default Phone;

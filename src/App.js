@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import Phone from './Phone'
 
 const App = () => {
-  const [token, setState] = useState(null);
+  const [token, setToken] = useState(null);
   const identity = "phil";
+
+  useEffect(() => {
+    fetch(`/voice/token?identity=${encodeURIComponent(identity)}`)
+      .then(response => response.json())
+      .then(({token}) => setToken(token));
+  }, [])
 
   return (
     <div className="App">
@@ -11,7 +18,7 @@ const App = () => {
         <h1>React &amp; Twilio Phone</h1>
       </header>
 
-      <p>Other stuff</p>
+      {token ? <Phone token={token}></Phone> : <p>Loading...</p>}
 
       <footer>
         <p>Built on Twitch by <a href="https://twitch.tv/phil_nash">phil_nash</a></p>
@@ -19,15 +26,5 @@ const App = () => {
     </div>
   );
 }
-
-
-
-  // handleSubmit(event) {
-  //   event.preventDefault();
-  //   fetch(`/voice/token?identity=${encodeURIComponent(this.state.name)}`)
-  //     .then(response => response.json())
-  //     .then(({token}) => this.setState({ ...this.state, token: token }));
-  // }
-
 
 export default App;

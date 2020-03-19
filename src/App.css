@@ -1,0 +1,17 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+header,
+footer {
+  background: #36d576;
+  color: #fff;
+  text-align: center;
+}
+main {
+  flex-grow: 1;
+}
+footer a {
+  color: #fff;
+}

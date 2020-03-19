@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Device } from "twilio-client";
 import Dialler from "./Dialler";
+import KeypadButton from "./KeypadButton";
+import "./Phone.css";
 
 const Phone = ({ token }) => {
   const [status, setStatus] = useState("Connecting");
@@ -39,13 +41,15 @@ const Phone = ({ token }) => {
   };
 
   return (
-    <div>
+    <>
       <Dialler number={number} setNumber={setNumber}></Dialler>
-      <button onClick={handleMainButtonClick}>
-        {status === "On call" ? "Hang up" : "Call"}
-      </button>
+      <div className="call">
+        <KeypadButton handleClick={handleMainButtonClick} color="green">
+          {status === "On call" ? "Hang up" : "Call"}
+        </KeypadButton>
+      </div>
       <p className="status">{status}</p>
-    </div>
+    </>
   );
 };
 

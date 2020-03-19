@@ -1,0 +1,19 @@
+.keypad {
+  display: grid;
+  list-style: none;
+  padding: 0;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.keypad li {
+  display: flex;
+  justify-content: center;
+}
+
+.input {
+  font-size: 24px;
+  border-color: transparent;
+  width: 100%;
+  text-align: center;
+  margin: 2em 0;
+}

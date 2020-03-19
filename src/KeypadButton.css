@@ -1,0 +1,16 @@
+.keypad-button {
+  border: none;
+  border-radius: 100%;
+  background-color: #f4f4f6;
+  color: #121c2d;
+  width: 2em;
+  height: 2em;
+  font-size: 24px;
+  line-height: 1;
+  padding: 0;
+}
+
+.keypad-button.green {
+  background-color: #36d576;
+  color: #fff;
+}

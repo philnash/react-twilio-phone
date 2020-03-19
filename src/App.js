@@ -15,14 +15,16 @@ const App = () => {
   };
 
   return (
-    <div className="App">
+    <div className="app">
       <header className="App-header">
         <h1>React &amp; Twilio Phone</h1>
       </header>
 
-      {!clicked && <button onClick={handleClick}>Connect to Phone</button>}
+      <main>
+        {!clicked && <button onClick={handleClick}>Connect to Phone</button>}
 
-      {token ? <Phone token={token}></Phone> : <p>Loading...</p>}
+        {token ? <Phone token={token}></Phone> : <p>Loading...</p>}
+      </main>
 
       <footer>
         <p>

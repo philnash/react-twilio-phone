@@ -1,4 +1,6 @@
 import React from "react";
+import "./Dialler.css";
+import KeypadButton from "./KeypadButton";
 
 const Dialler = ({ number, setNumber }) => {
   const handleNumberChange = event => {
@@ -12,44 +14,49 @@ const Dialler = ({ number, setNumber }) => {
   };
 
   return (
-    <div>
-      <input type="tel" value={number} onChange={handleNumberChange} />
-      <ol>
+    <>
+      <input
+        type="tel"
+        value={number}
+        onChange={handleNumberChange}
+        className="input"
+      />
+      <ol className="keypad">
         <li>
-          <button onClick={handleNumberPressed("1")}>1</button>
+          <KeypadButton handleClick={handleNumberPressed("1")}>1</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("2")}>2</button>
+          <KeypadButton handleClick={handleNumberPressed("2")}>2</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("3")}>3</button>
+          <KeypadButton handleClick={handleNumberPressed("3")}>3</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("4")}>4</button>
+          <KeypadButton handleClick={handleNumberPressed("4")}>4</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("5")}>5</button>
+          <KeypadButton handleClick={handleNumberPressed("5")}>5</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("6")}>6</button>
+          <KeypadButton handleClick={handleNumberPressed("6")}>6</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("7")}>7</button>
+          <KeypadButton handleClick={handleNumberPressed("7")}>7</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("8")}>8</button>
+          <KeypadButton handleClick={handleNumberPressed("8")}>8</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("9")}>9</button>
+          <KeypadButton handleClick={handleNumberPressed("9")}>9</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("0")}>0</button>
+          <KeypadButton handleClick={handleNumberPressed("+")}>+</KeypadButton>
         </li>
         <li>
-          <button onClick={handleNumberPressed("+")}>+</button>
+          <KeypadButton handleClick={handleNumberPressed("0")}>0</KeypadButton>
         </li>
       </ol>
-    </div>
+    </>
   );
 };
 

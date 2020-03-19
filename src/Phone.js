@@ -16,6 +16,12 @@ const Phone = ({ token }) => {
     device.on("ready", () => {
       setStatus("Ready");
     });
+    device.on("connect", () => {
+      setStatus("On call");
+    });
+    device.on("disconnect", () => {
+      setStatus("Ready");
+    });
 
     return () => {
       device.destroy();
@@ -24,14 +30,20 @@ const Phone = ({ token }) => {
     };
   }, [token]);
 
-  const handleCall = () => {
-    deviceRef.current.connect({ To: number });
+  const handleMainButtonClick = () => {
+    if (status === "On call") {
+      deviceRef.current.disconnectAll();
+    } else {
+      deviceRef.current.connect({ To: number });
+    }
   };
 
   return (
     <div>
       <Dialler number={number} setNumber={setNumber}></Dialler>
-      <button onClick={handleCall}>Call</button>
+      <button onClick={handleMainButtonClick}>
+        {status === "On call" ? "Hang up" : "Call"}
+      </button>
       <p className="status">{status}</p>
     </div>
   );

@@ -2,11 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { Device } from "twilio-client";
 import Dialler from "./Dialler";
 import KeypadButton from "./KeypadButton";
+import Incoming from "./Incoming";
 import "./Phone.css";
 
 const Phone = ({ token }) => {
   const [status, setStatus] = useState("Connecting");
   const [number, setNumber] = useState("");
+  const [conn, setConn] = useState(null);
   const deviceRef = useRef(null);
 
   useEffect(() => {
@@ -23,6 +25,23 @@ const Phone = ({ token }) => {
     });
     device.on("disconnect", () => {
       setStatus("Ready");
+      setConn(null);
+    });
+    device.on("incoming", connection => {
+      setStatus("Incoming");
+      setConn(connection);
+      connection.on("reject", () => {
+        setStatus("Ready");
+        setConn(null);
+      })
+    });
+    device.on("cancel", () => {
+      setStatus("Ready");
+      setConn(null);
+    });
+    device.on("reject", () => {
+      setStatus("Ready");
+      setConn(null);
     });
 
     return () => {
@@ -40,17 +59,23 @@ const Phone = ({ token }) => {
     }
   };
 
-  return (
-    <>
-      <Dialler number={number} setNumber={setNumber}></Dialler>
-      <div className="call">
-        <KeypadButton handleClick={handleMainButtonClick} color="green">
-          {status === "On call" ? "Hang up" : "Call"}
-        </KeypadButton>
-      </div>
-      <p className="status">{status}</p>
-    </>
-  );
+  let render;
+  if (conn && status === "Incoming") {
+    render = <Incoming device={deviceRef.current} connection={conn}></Incoming>;
+  } else {
+    render = (
+      <>
+        <Dialler number={number} setNumber={setNumber}></Dialler>
+        <div className="call">
+          <KeypadButton handleClick={handleMainButtonClick} color="green">
+            {status === "On call" ? "Hang up" : "Call"}
+          </KeypadButton>
+        </div>
+        <p className="status">{status}</p>
+      </>
+    );
+  }
+  return render;
 };
 
 export default Phone;

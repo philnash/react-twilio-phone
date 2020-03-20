@@ -72,6 +72,14 @@ app.post("/voice", (req, res) => {
   res.send(response.toString());
 });
 
+app.post("/voice/incoming", (req, res) => {
+  const response = new VoiceResponse();
+  const dial = response.dial({ callerId: req.body.From, answerOnBridge: true });
+  dial.client("phil");
+  res.set("Content-Type", "text/xml");
+  res.send(response.toString());
+});
+
 app.listen(3001, () =>
   console.log("Express server is running on localhost:3001")
 );

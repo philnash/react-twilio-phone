@@ -5,8 +5,16 @@ import KeypadButton from "./KeypadButton";
 import Incoming from "./Incoming";
 import "./Phone.css";
 
+const states = {
+  CONNECTING: "Connecting",
+  READY: "Ready",
+  INCOMING: "Incoming",
+  ON_CALL: "On call",
+  OFFLINE: "Offline"
+};
+
 const Phone = ({ token }) => {
-  const [status, setStatus] = useState("Connecting");
+  const [status, setStatus] = useState(states.CONNECTING);
   const [number, setNumber] = useState("");
   const [conn, setConn] = useState(null);
   const [device, setDevice] = useState(null);
@@ -18,36 +26,36 @@ const Phone = ({ token }) => {
 
     device.on("ready", () => {
       setDevice(device);
-      setStatus("Ready");
+      setStatus(states.READY);
     });
     device.on("connect", () => {
-      setStatus("On call");
+      setStatus(states.ON_CALL);
     });
     device.on("disconnect", () => {
-      setStatus("Ready");
+      setStatus(states.READY);
       setConn(null);
     });
     device.on("incoming", connection => {
-      setStatus("Incoming");
+      setStatus(states.INCOMING);
       setConn(connection);
       connection.on("reject", () => {
-        setStatus("Ready");
+        setStatus(states.READY);
         setConn(null);
       });
     });
     device.on("cancel", () => {
-      setStatus("Ready");
+      setStatus(states.READY);
       setConn(null);
     });
     device.on("reject", () => {
-      setStatus("Ready");
+      setStatus(states.READY);
       setConn(null);
     });
 
     return () => {
       device.destroy();
       setDevice(null);
-      setStatus("Offline");
+      setStatus(states.OFFLINE);
     };
   }, [token]);
 
@@ -60,7 +68,7 @@ const Phone = ({ token }) => {
   };
 
   let render;
-  if (conn && status === "Incoming") {
+  if (conn && status === states.INCOMING) {
     render = <Incoming device={device} connection={conn}></Incoming>;
   } else {
     render = (
@@ -68,7 +76,7 @@ const Phone = ({ token }) => {
         <Dialler number={number} setNumber={setNumber}></Dialler>
         <div className="call">
           <KeypadButton handleClick={handleMainButtonClick} color="green">
-            {status === "On call" ? "Hang up" : "Call"}
+            {status === states.ON_CALL ? "Hang up" : "Call"}
           </KeypadButton>
         </div>
         <p className="status">{status}</p>

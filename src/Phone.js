@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Device } from "twilio-client";
 import Dialler from "./Dialler";
 import KeypadButton from "./KeypadButton";
@@ -9,15 +9,15 @@ const Phone = ({ token }) => {
   const [status, setStatus] = useState("Connecting");
   const [number, setNumber] = useState("");
   const [conn, setConn] = useState(null);
-  const deviceRef = useRef(null);
+  const [device, setDevice] = useState(null);
 
   useEffect(() => {
     const device = new Device();
-    deviceRef.current = device;
 
     device.setup(token, { debug: true });
 
     device.on("ready", () => {
+      setDevice(device);
       setStatus("Ready");
     });
     device.on("connect", () => {
@@ -46,22 +46,22 @@ const Phone = ({ token }) => {
 
     return () => {
       device.destroy();
-      deviceRef.current = null;
+      setDevice(null);
       setStatus("Offline");
     };
   }, [token]);
 
   const handleMainButtonClick = () => {
     if (status === "On call") {
-      deviceRef.current.disconnectAll();
+      device.disconnectAll();
     } else {
-      deviceRef.current.connect({ To: number });
+      device.connect({ To: number });
     }
   };
 
   let render;
   if (conn && status === "Incoming") {
-    render = <Incoming device={deviceRef.current} connection={conn}></Incoming>;
+    render = <Incoming device={device} connection={conn}></Incoming>;
   } else {
     render = (
       <>

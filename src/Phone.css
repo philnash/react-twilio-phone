@@ -1,3 +1,12 @@
 .call {
   text-align: center;
 }
+.status {
+  text-align: center;
+  background: #f4f4f6;
+  display: block;
+  width: 200px;
+  padding: 0.5em;
+  border-radius: 6px;
+  margin: 2em auto 0;
+}

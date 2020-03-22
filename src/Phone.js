@@ -33,7 +33,7 @@ const Phone = ({ token }) => {
       connection.on("reject", () => {
         setStatus("Ready");
         setConn(null);
-      })
+      });
     });
     device.on("cancel", () => {
       setStatus("Ready");

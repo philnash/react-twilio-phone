@@ -3,18 +3,13 @@ import { Device } from "twilio-client";
 import Dialler from "./Dialler";
 import KeypadButton from "./KeypadButton";
 import Incoming from "./Incoming";
+import OnCall from "./OnCall";
 import "./Phone.css";
-
-const states = {
-  CONNECTING: "Connecting",
-  READY: "Ready",
-  INCOMING: "Incoming",
-  ON_CALL: "On call",
-  OFFLINE: "Offline"
-};
+import states from "./states";
+import FakeState from "./FakeState";
 
 const Phone = ({ token }) => {
-  const [status, setStatus] = useState(states.CONNECTING);
+  const [state, setState] = useState(states.CONNECTING);
   const [number, setNumber] = useState("");
   const [conn, setConn] = useState(null);
   const [device, setDevice] = useState(null);
@@ -26,64 +21,79 @@ const Phone = ({ token }) => {
 
     device.on("ready", () => {
       setDevice(device);
-      setStatus(states.READY);
+      setState(states.READY);
     });
-    device.on("connect", () => {
-      setStatus(states.ON_CALL);
+    device.on("connect", connection => {
+      console.log("Connect event");
+      setConn(connection);
+      setState(states.ON_CALL);
     });
     device.on("disconnect", () => {
-      setStatus(states.READY);
+      setState(states.READY);
       setConn(null);
     });
     device.on("incoming", connection => {
-      setStatus(states.INCOMING);
+      setState(states.INCOMING);
       setConn(connection);
       connection.on("reject", () => {
-        setStatus(states.READY);
+        setState(states.READY);
         setConn(null);
       });
     });
     device.on("cancel", () => {
-      setStatus(states.READY);
+      setState(states.READY);
       setConn(null);
     });
     device.on("reject", () => {
-      setStatus(states.READY);
+      setState(states.READY);
       setConn(null);
     });
 
     return () => {
       device.destroy();
       setDevice(null);
-      setStatus(states.OFFLINE);
+      setState(states.OFFLINE);
     };
   }, [token]);
 
-  const handleMainButtonClick = () => {
-    if (status === "On call") {
-      device.disconnectAll();
-    } else {
-      device.connect({ To: number });
-    }
+  const handleCall = () => {
+    device.connect({ To: number });
+  };
+
+  const handleHangup = () => {
+    device.disconnectAll();
   };
 
   let render;
-  if (conn && status === states.INCOMING) {
-    render = <Incoming device={device} connection={conn}></Incoming>;
+  if (conn) {
+    if (state === states.INCOMING) {
+      render = <Incoming device={device} connection={conn}></Incoming>;
+    } else if (state === states.ON_CALL) {
+      render = <OnCall handleHangup={handleHangup} connection={conn}></OnCall>;
+    }
   } else {
     render = (
       <>
         <Dialler number={number} setNumber={setNumber}></Dialler>
         <div className="call">
-          <KeypadButton handleClick={handleMainButtonClick} color="green">
-            {status === states.ON_CALL ? "Hang up" : "Call"}
+          <KeypadButton handleClick={handleCall} color="green">
+            Call
           </KeypadButton>
         </div>
-        <p className="status">{status}</p>
       </>
     );
   }
-  return render;
+  return (
+    <>
+      <FakeState
+        currentState={state}
+        setState={setState}
+        setConn={setConn}
+      ></FakeState>
+      {render}
+      <p className="status">{state}</p>
+    </>
+  );
 };
 
 export default Phone;

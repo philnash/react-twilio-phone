@@ -1,0 +1,9 @@
+.fake-state {
+  padding: 0.5em;
+  background-color: #e8e8e8;
+  text-align: center;
+}
+
+.fake-state input {
+  margin-right: 3em;
+}

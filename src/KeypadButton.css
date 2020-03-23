@@ -14,3 +14,8 @@
   background-color: #36d576;
   color: #fff;
 }
+
+.keypad-button.red {
+  background-color: #f22f46;
+  color: #fff;
+}

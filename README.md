@@ -4,6 +4,8 @@ This application is an implementation of [Twilio Client](https://www.twilio.com/
 
 It is a work in progress, being built on my [Twitch stream](https://www.twitch.tv/phil_nash/). Join in and watch the progress or suggest features!
 
+* [Current features](#current-features)
+  * [Ideas for future work](#ideas-for-future-work)
 * [Running this project](#running-this-project)
   * [Things you will need](#things-you-will-need)
   * [Project Setup](#project-setup)
@@ -11,6 +13,25 @@ It is a work in progress, being built on my [Twitch stream](https://www.twitch.t
   * [TwiML App](#twiml-app)
   * [Running the application](#running-the-application)
 * [License](#license)
+
+## Current features
+
+Currently this application can:
+
+[x] Make outbound phone calls
+[x] Cancel outbound phone calls
+[x] Receive inbound phone calls
+[x] Reject inbound phone calls
+[x] Hang up on an active call
+[x] Mute an active call
+[x] Detect speech and warn while on mute (using [Meyda](https://meyda.js.org/))
+
+### Ideas for future work
+
+[ ] Play DTMF tones down the phone
+[ ] Build a rotary dialler 😅
+[ ] Store a call log
+[ ] Use the web contact picker API to choose a contact to call
 
 ## Running this project
 

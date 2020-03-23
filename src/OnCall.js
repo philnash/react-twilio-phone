@@ -1,31 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import KeypadButton from "./KeypadButton";
 import useLoudness from "./hooks/useLoudness";
+import useMuteWarning from "./hooks/useMuteWarning";
 import "./OnCall.css";
-
-const useMuteWarning = (loudness, running) => {
-  const [showMuteWarning, setShowMuteWarning] = useState(false);
-
-  useEffect(() => {
-    if (loudness > 6 && running) {
-      setShowMuteWarning(true);
-    }
-  }, [loudness, running]);
-
-  useEffect(() => {
-    let timeout;
-    if (showMuteWarning) {
-      timeout = setTimeout(() => {
-        setShowMuteWarning(false);
-      }, 5000);
-    }
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [showMuteWarning]);
-
-  return [showMuteWarning];
-};
 
 const OnCall = ({ handleHangup, connection }) => {
   const [muted, setMuted] = useState(false);

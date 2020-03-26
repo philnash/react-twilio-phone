@@ -48,7 +48,7 @@ Clone the project, change into the directory and install the dependencies.
 
 ```bash
 git clone https://github.com/philnash/react-twilio-phone.git
-cd react-express-starter
+cd react-twilio-phone
 npm install
 ```
 

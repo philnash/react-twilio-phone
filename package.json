@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/meyda": "^4.3.0",
     "body-parser": "^1.19.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-pino-logger": "^4.0.0",
     "node-env-run": "^4.0.2",
     "nodemon": "^2.0.20",
